@@ -1,0 +1,20 @@
+# GET: /health
+GET http://localhost:3004/health
+
+###
+GET http://localhost:3004/auth/google
+Content-Type: application/json
+
+{
+  "email": "emzzyoluwole@gmail.com"
+}
+
+### 
+GET http://localhost:3004/emails
+# Authorization: Bearer _Bearer Token_
+
+### 
+GET http://localhost:3004/auth/google
+
+###
+GET http://localhost:3004/emails
