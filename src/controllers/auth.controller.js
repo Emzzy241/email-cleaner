@@ -1,14 +1,10 @@
 const oauth2Client = require("../config/google.config");
 const { google } = require("googleapis");
 const { setGoogleTokens } = require("../store/token.store")
-// const { PrismaClient } = require("../config/prisma");
-// const { prismaConfig } = require("../../prisma.config.ts")
 
 const SCOPES = [
     "https://www.googleapis.com/auth/gmail.readonly"
 ];
-
-// const prisma = new PrismaClient(prismaConfig);
 
 // Step 1: Redirect user to Google login
 const googleAuthUrl = (req, res) => {
