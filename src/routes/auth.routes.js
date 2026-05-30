@@ -3,11 +3,12 @@ const router = express.Router();
 
 const {
     googleAuthUrl,
-    googleCallback
+    googleCallback,
 } = require("../controllers/auth.controller");
 
 router.get("/google", googleAuthUrl);
 router.get("/google/callback", googleCallback);
+
 
 module.exports = router;
 
