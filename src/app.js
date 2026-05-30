@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const authRoutes = require("./routes/auth.routes");
 const emailRoutes = require("./routes/email.routes");
+const devRoutes = require("./routes/dev.routes")
 
 const app = express();
 
@@ -13,5 +14,6 @@ app.use(express.json()); // automatically convert JSON requests into javascript 
 // Routes
 app.use("/auth", authRoutes);
 app.use("/emails", emailRoutes);
+app.use("/", devRoutes);
 
 module.exports = app;
