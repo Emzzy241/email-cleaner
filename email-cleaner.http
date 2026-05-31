@@ -19,5 +19,10 @@ GET http://localhost:3004/auth/google
 ###
 GET http://localhost:3004/emails
 
+###
+
+POST  http://localhost:3004/emails/cleanup
+Content-Type: application/json
+
 ### Test Route for vetting prisma
 GET http://localhost:3004/db-test
