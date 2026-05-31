@@ -5,7 +5,7 @@ const oauth2Client = require("../config/google.config");
 
 const SCOPES = [
     "openid",
-    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.modify",
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile"
 ];
