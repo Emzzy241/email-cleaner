@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            Int          @id @default(autoincrement())
+  email         String       @unique
+  googleId      String?      @unique
+  createdAt     DateTime     @default(now())
+
+  oauthTokens   OAuthToken[]
+  emails        Email[]
+}
+
+model OAuthToken {
+  id            Int       @id @default(autoincrement())
+
+  accessToken   String?
+  refreshToken  String
+
+  provider      String
+  expiryDate    BigInt?
+
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+
+  createdAt     DateTime  @default(now())
+}
+
+model Email {
+  id                Int       @id @default(autoincrement())
+
+  gmailMessageId    String    @unique
+
+  subject           String?
+
+  sender            String?
+
+  classification    String?
+
+  isDeleted         Boolean   @default(false)
+
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+
+  createdAt         DateTime  @default(now())
+}
