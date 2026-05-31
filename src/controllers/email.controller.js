@@ -2,12 +2,26 @@ const gmailService = require("../services/gmail.service");
 
 const getEmails = async (req, res) => {
     try {
-        const emails = await gmailService.getEmails();
+        const userId = req.user?.id || 1; // temporary fallback
+
+        // 1. Get Gmail client (already DB-backed + OAuth handled)
+        const gmail = await gmailService.getGmailClient(userId);
+
+        // 2. Fetch message IDs
+        const response = await gmail.users.messages.list({
+            userId: "me",
+            maxResults: 10
+        });
+
+        const messages = response.data.messages || [];
+
+        // 3. Transform into FULL email objects using your service
+        const emails = await gmailService.getEmails(messages, gmail);
 
         return res.json({
             message: "Emails fetched successfully",
             count: emails.length,
-            emails
+            messages: emails
         });
 
     } catch (error) {
@@ -16,10 +30,40 @@ const getEmails = async (req, res) => {
             error: error.message
         });
     }
-    console.log("Fetching emails...");
 };
 
 module.exports = { getEmails };
+
+// const gmailService = require("../services/gmail.service");
+
+// const getEmails = async (req, res) => {
+//     try {
+//         const userId = req.user?.id || 1; // temporary fallback
+
+//         const gmail = await gmailService.getGmailClient(userId);
+
+//         const response = await gmail.users.messages.list({
+//             userId: "me",
+//             maxResults: 10
+//         });
+
+//         const messages = response.data.messages || [];
+
+//         return res.json({
+//             message: "Emails fetched successfully",
+//             count: messages.length,
+//             messages
+//         });
+
+//     } catch (error) {
+//         return res.status(500).json({
+//             message: "Failed to fetch emails",
+//             error: error.message
+//         });
+//     }
+// };
+
+// module.exports = { getEmails };
 
 
 // const getEmails = (req, res) => {
