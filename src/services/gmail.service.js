@@ -2,6 +2,8 @@ const { google } = require("googleapis");
 const oauth2Client = require("../config/google.config");
 const { getGoogleTokens } = require("../store/token.store");
 const prisma = require("../config/prisma");
+const { classifyEmail } = require("./classification.service");
+const { shouldDeleteEmail, shouldProtectEmail } = require("./cleanup.service");
 
 // Get Gmail instance with oauth
 // const getGmailClient = () => {
@@ -131,6 +133,7 @@ const getEmailById = async (messageId) => {
 };
 
 const getEmails = async (messages, gmail) => {
+
     // const gmail = await getGmailClient();
 
     const fullEmails = await Promise.all(
@@ -146,17 +149,36 @@ const getEmails = async (messages, gmail) => {
             const getHeader = (name) =>
                 headers.find(h => h.name === name)?.value;
 
-            return {
+            const emailObject = {
                 id: email.data.id,
                 subject: getHeader("Subject"),
                 sender: getHeader("From"),
                 snippet: email.data.snippet,
                 internalDate: email.data.internalDate
             };
+
+            emailObject.classification = classifyEmail(emailObject);
+            emailObject.recommendedAction =
+                shouldDeleteEmail(emailObject)
+                    ? "DELETE" :
+                    shouldProtectEmail(emailObject)
+                        ? "KEEP" : "REVIEW";
+
+            return emailObject;
         })
     );
 
     return fullEmails;
+};
+
+const deleteEmail = async (messageId, gmail) => {
+
+    await gmail.users.messages.trash({
+        userId: "me",
+        id: messageId
+    });
+
+    return true;
 };
 
 const parseEmail = (message) => {
@@ -188,5 +210,6 @@ console.log("Google tokens loaded");
 
 module.exports = {
     getEmails,
-    getGmailClient
+    getGmailClient,
+    deleteEmail
 };
