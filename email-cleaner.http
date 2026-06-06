@@ -20,9 +20,23 @@ GET http://localhost:3004/auth/google
 GET http://localhost:3004/emails
 
 ###
+POST http://localhost:3004/emails/cleanup?dryRun=true
+
+###
 
 POST  http://localhost:3004/emails/cleanup
 Content-Type: application/json
 
 ### Test Route for vetting prisma
 GET http://localhost:3004/db-test
+
+###
+GET  http://localhost:3004/emails/cleanup-jobs/2
+
+###
+GET  http://localhost:3004/emails/cleanup-all-jobs
+###
+POST  http://localhost:3004/emails/cleanup/old-emails?dryRun=true
+
+### Actual Deleting
+POST  http://localhost:3004/emails/cleanup/old-emails
