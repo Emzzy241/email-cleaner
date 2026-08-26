@@ -19,4 +19,8 @@ const devTestDbConnection = async (req, res) => {
     }
 }
 
+const devTestServer = async (req, res) => {
+    console.log("The server is working -- Dev Mode :-)");
+}
+
 module.exports = devTestDbConnection;
