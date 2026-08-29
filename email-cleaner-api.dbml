@@ -1,0 +1,63 @@
+// ==========================================
+// 1. USERS TABLE
+// ==========================================
+Table users {
+  id int [pk, increment]
+  email string [not null, unique]
+  googleId string [unique]
+  createdAt timestamp [default: `now()`]
+}
+
+// ==========================================
+// 2. OAUTH TOKENS TABLE
+// ==========================================
+Table oauth_tokens {
+  id int [pk, increment]
+  accessToken string
+  refreshToken string [not null]
+  provider string [not null]
+  expiryDate bigint [note: 'Stored as BigInt for millisecond accuracy Unix timestamps']
+  userId int [not null]
+  createdAt timestamp [default: `now()`]
+}
+
+// ==========================================
+// 3. EMAILS TABLE (Metadata Cache)
+// ==========================================
+Table emails {
+  id int [pk, increment]
+  gmailMessageId string [not null, unique, note: 'Unique hash map pointer from Google API']
+  subject string
+  sender string
+  classification string [note: 'e.g., promotional, spam, newsletters']
+  isDeleted boolean [not null, default: false]
+  userId int [not null]
+  createdAt timestamp [default: `now()`]
+}
+
+// ==========================================
+// 4. CLEANUP JOBS TABLE (Asynchronous Queue Logs)
+// ==========================================
+Table cleanup_jobs {
+  id int [pk, increment]
+  status string [not null, note: 'e.g., pending, processing, completed, failed']
+  requested int [not null, note: 'Total target emails picked for deletion']
+  deleted int [not null, default: 0, note: 'Successful deletions counters']
+  failed int [not null, default: 0, note: 'Encountered API failures counters']
+  userId int [not null]
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp
+}
+
+// ==========================================
+// FOREIGN KEY RELATIONSHIPS
+// ==========================================
+
+// One User can have multiple OAuth Profiles (1:N)
+Ref: oauth_tokens.userId > users.id [delete: cascade]
+
+// One User owns many synced Emails metadata (1:N)
+Ref: emails.userId > users.id [delete: cascade]
+
+// An explicit mapping to a User for processing cleanup queues
+Ref: cleanup_jobs.userId > users.id [delete: cascade]
