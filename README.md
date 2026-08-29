@@ -9,6 +9,11 @@
 ## Description
 _A Tiny Email service API with the goal of completely helping me clean my inbox, Temu's email can be really annoying and they have eaten most of my free google cloud storage. Also, emails from 5-6 years ago needs wiping._
 
+## Image of the Database Schema
+![Database-Schema-Preview](email-cleaner-api-dbml-file.png)
+
+_This is the current dataabse schema as at 29/08/2026, 18:48 (UTC+1) (Nigerian TIme)_
+
 ## Setup/Installation
 1. Clone the repo
 ```
