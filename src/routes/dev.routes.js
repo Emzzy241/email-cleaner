@@ -6,6 +6,6 @@ const devTestServer = require("../controllers/dev.controller");
 
 // Simple DB test route
 router.get("/db-test", devTestDbConnection);
-router.module("/server-test", devTestServer);
+router.get("/server-test", devTestServer);
 
 module.exports = router;
