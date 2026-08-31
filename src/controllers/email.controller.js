@@ -230,4 +230,8 @@ const cleanupOldEmails = async (req, res) => {
     }
 }
 
+// gotta start making routes for some reviews actually
+// some "REVIEW" FOR EMAIL ARE PRETTY MUCH LIKE SPAMS Honestly.
+
+
 module.exports = { getEmails, cleanupEmails, cleanupOldEmails,  getCleanupStatus, getAllCleanupStatus };

@@ -14,4 +14,8 @@ router.get("/cleanup-all-jobs", getAllCleanupStatus); // status for all jobs cur
 router.post("/cleanup", cleanupEmails);
 router.post("/cleanup/old-emails", cleanupOldEmails);
 
+
+// gotta start making routes for some reviews actually
+// some "REVIEW" FOR EMAIL ARE PRETTY MUCH LIKE SPAMS Honestly.
+
 module.exports = router;
